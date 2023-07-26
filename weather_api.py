@@ -85,8 +85,7 @@ def get_cities_weather_data():
         else:
             unreached_cities.append(city)
     
-    export_to_json(unreached_cities, f'unreached_cities_{formatted_date_time()}.lst')    
-    export_to_json(cities_data, f'datos_ciudades_{formatted_date_time()}.json')
-    export_to_csv(cities_data, f'datos_ciudades_{formatted_date_time()}.csv')
+    export_to_json(unreached_cities, f'{config.FOLDER}/no_alcanzadas_{formatted_date_time()}.lst')    
+    export_to_csv(cities_data, f'{config.FOLDER}/_ciudades_{formatted_date_time()}.csv')
             
     return cities_data

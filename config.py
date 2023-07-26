@@ -6,6 +6,8 @@ _ = load_dotenv(find_dotenv())
 API_KEY = os.getenv('api_key')
 BASE_URL = "https://api.openweathermap.org/data/2.5/weather"
 UNITS = 'metric'
+FOLDER = 'datos/'
+
 cityList = [
     "London",
     "New York",
