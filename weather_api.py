@@ -4,7 +4,7 @@ import json
 from datetime import datetime, time, timedelta
 import pandas as pd
 
-from alive_progress import alive_bar
+from alive_progress import alive_bar, animations
 
 
 def request_data(city: str = None, coord: str = None):
@@ -14,13 +14,6 @@ def request_data(city: str = None, coord: str = None):
     Es 200, devuelve la data en formato json
     De lo contrario, intentará manejar las excepciones
     """
-    # print("*" * 50)
-    # print(f"Solicitando datos")
-    # if city:
-    #     print(f'Ciudad: "{city}"')
-    # else:
-    #     print(f'Coordenadas: {coord}')
-    # print(f'Unidad: "{config.UNITS}"')
 
     try:
         if city:
@@ -103,7 +96,7 @@ def get_cities_weather_data():
     cities_data = []
     unreached_cities = []
 
-    with alive_bar(len(config.cityList), title='Processing', length=60) as bar:
+    with alive_bar(len(config.cityList)+len(config.coordList), title='Processing', length=20, bar='bubbles') as bar:
         for city in config.cityList:
             bar()
             city_data = request_data(city=city)
@@ -113,7 +106,7 @@ def get_cities_weather_data():
             else:
                 unreached_cities.append(city)
     
-    with alive_bar(len(config.coordList), title='Processing', length=60) as bar:
+    
         for coord in config.coordList:
             bar()
             coord_data = request_data(coord=coord)
