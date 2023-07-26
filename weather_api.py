@@ -1,11 +1,11 @@
 import config
 import requests
 import json
-from datetime import datetime
+from datetime import datetime, time, timedelta
 import pandas as pd
 
 
-def request_data_by_city(city: str = None, coord: str = None):
+def request_data(city: str = None, coord: str = None):
     """
     Recibe "city" que es el nombre de la ciudad, en formato string
     Hace una solicitud a la api y si el código de respuesta
@@ -14,7 +14,10 @@ def request_data_by_city(city: str = None, coord: str = None):
     """
     print("*" * 50)
     print(f"Solicitando datos")
-    print(f'Ciudad: "{city}"')
+    if city:
+        print(f'Ciudad: "{city}"')
+    else:
+        print(f'Coordenadas: {coord}')
     print(f'Unidad: "{config.UNITS}"')
 
     try:
@@ -54,13 +57,23 @@ def save_to_file(data, filename):
 def formatted_date_time():
     return datetime.now().strftime("%Y%m%d")
 
+def format_datetime(unix_timestamp):
+
+    # Convertir el tiempo Unix a una fecha y hora en UTC
+    utc_datetime = datetime.utcfromtimestamp(unix_timestamp)
+
+    gmt3_offset = timedelta(hours=-3)
+    argentina_datetime = utc_datetime + gmt3_offset
+    
+    return argentina_datetime
+
 
 def export_to_csv(data_list, filename):
     dfs = []
     for data in data_list:
         wdf = pd.json_normalize(data["weather"][0]).add_prefix("weather_")
 
-        keys_to_remove = ["weather", "base", "timezone", "id", "cod"]
+        keys_to_remove = ["weather", "base", "timezone", "cod"]
 
         for key in keys_to_remove:
             del data[key]
@@ -89,15 +102,17 @@ def get_cities_weather_data():
     unreached_cities = []
 
     for city in config.cityList:
-        city_data = request_data_by_city(city=city)
+        city_data = request_data(city=city)
         if city_data:
+            city_data["dt"] = format_datetime(city_data["dt"])
             cities_data.append(city_data)
         else:
             unreached_cities.append(city)
 
     for coord in config.coordList:
-        coord_data = request_data_by_city(coord=coord)
+        coord_data = request_data(coord=coord)
         if coord_data:
+            coord_data["dt"] = format_datetime(coord_data["dt"])
             cities_data.append(coord_data)
         else:
             unreached_cities.append(coord)
