@@ -54,7 +54,7 @@ coordList = ["lat=31&lon=64", "lat=40&lon=-73", "lat=-31&lon=-64", "lat=25&lon=6
 2. Crear el archivo .env:
     
     ```ini
-    api_key = Tu api que key va aquí
+    api_key = Tu api key va aquí
     ```
 
 3. Lanzar la app:
