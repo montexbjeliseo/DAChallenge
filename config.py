@@ -15,9 +15,9 @@ cityList = [
     "Cordoba",
     "Taipei",
     "Buenos Aires",
-    "Mexico DF",
+    "Mexico City",
     "Dublin",
-    "Tilfis",
+    "Tiflis",
     "Bogota",
     "Tokio",
 ]
