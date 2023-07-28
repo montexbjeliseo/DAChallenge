@@ -61,3 +61,5 @@ coordList = ["lat=31&lon=64", "lat=40&lon=-73", "lat=-31&lon=-64", "lat=25&lon=6
     ```bash
     python main.py
     ```
+
+## En colab -> https://colab.research.google.com/drive/1f0vUwA3e7VlJ3iUnfqvJZbizghVQwx0k?usp=sharing
