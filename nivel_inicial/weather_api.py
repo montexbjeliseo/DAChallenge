@@ -1,7 +1,7 @@
 import config
 import requests
 import json
-from datetime import datetime, time, timedelta
+from datetime import datetime, timedelta
 import pandas as pd
 
 from alive_progress import alive_bar
@@ -14,13 +14,6 @@ def request_data(city: str = None, coord: str = None):
     Es 200, devuelve la data en formato json
     De lo contrario, intentará manejar las excepciones
     """
-    # print("*" * 50)
-    # print(f"Solicitando datos")
-    # if city:
-    #     print(f'Ciudad: "{city}"')
-    # else:
-    #     print(f'Coordenadas: {coord}')
-    # print(f'Unidad: "{config.UNITS}"')
 
     try:
         if city:
