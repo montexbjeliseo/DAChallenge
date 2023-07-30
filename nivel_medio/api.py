@@ -2,9 +2,10 @@ import requests
 from config import *
 from datetime_utils import *
 from file_utils import *
+from clean_data import clean_data
 
 
-def request_data(city: str = None, coord: str = None, dt: str = None) -> dict:
+def request_data(city: str = None, coord: str = None, dt: str = None):
     """
     Recibe "city" que es el nombre de la ciudad, en formato string
     Hace una solicitud a la api y si el código de respuesta
@@ -13,17 +14,21 @@ def request_data(city: str = None, coord: str = None, dt: str = None) -> dict:
     """
 
     try:
-        if city:
-            params = {"q": city, "units": UNITS, "appid": API_KEY, "dt": dt}
+        params = {
+            "lat": coord[0],
+            "lon": coord[1],
+            "units": UNITS,
+            "appid": API_KEY,
+            "dt": dt,
+            "exclude": "exclude=minutely, hourly",
+        }
 
-            response = requests.get(BASE_URL, params)
-        else:
-            response = requests.get(f"{BASE_URL}?{coord}&appid={API_KEY}&units={UNITS}&dt={dt}")
+        response = requests.get(BASE_URL, params)
 
         response.raise_for_status()
 
-        if response.status_code == 200:
-            return response.json()
+        return response.json()
+
     except requests.exceptions.RequestException as e:
         print(f"Error en la solicitud: {e}")
     except KeyError as e:
@@ -32,26 +37,7 @@ def request_data(city: str = None, coord: str = None, dt: str = None) -> dict:
         print(f"Error desconocido: {e}")
 
 
-def join_data(data_list) -> pd.DataFrame:
-    dfs = []
-    for data in data_list:
-        wdf = pd.json_normalize(data["weather"][0]).add_prefix("weather_")
-
-        keys_to_remove = ["weather", "base", "timezone", "cod"]
-
-        for key in keys_to_remove:
-            del data[key]
-
-        dfc = pd.json_normalize(data)
-
-        dfc = pd.concat([dfc, wdf], axis=1)
-
-        dfs.append(dfc)
-
-    return pd.concat(dfs, axis=0)
-
-
-def get_cities_weather_data(dt) -> (pd.DataFrame, list):
+def get_cities_weather_data(dt):
     """
     Obtener los datos del clima
     A partir de la lista de ciudades
@@ -61,35 +47,29 @@ def get_cities_weather_data(dt) -> (pd.DataFrame, list):
     # Acá almacenamos los datos de todas las ciudades
     # Para luego ser exportadas
     cities_data = []
-    unreached_cities = []
 
-    for city in cityList:
-        city_data = request_data(city=city, dt=dtnow())
-        if city_data:
-            city_data["dt"] = format_datetime(city_data["dt"])
-            cities_data.append(city_data)
-        else:
-            unreached_cities.append(city)
-
-    for coord in coordList:
-        coord_data = request_data(coord=coord, dt=dtnow())
+    for city, coord in cityCoord.items():
+        coord_data = request_data(coord=coord, dt=dt)
         if coord_data:
-            coord_data["dt"] = format_datetime(coord_data["dt"])
-            cities_data.append(coord_data)
-        else:
-            unreached_cities.append(coord)
+            city_data = {}
+            city_data["city"] = city
+            city_data["data"] = coord_data
+            cities_data.append(city_data)
+    return cities_data
 
-    return join_data(cities_data), unreached_cities
 
 def get_last_five_days_cities_weather_data():
+    # Este preciso momento en unix timestamp format
     ts = dtnow()
     # Un dia en unix timestamp format
     oditsu = 86400
     
-    dfs = []
+    cleaned_data_list = []
     for i in range(5):
-        df, unreached =  get_cities_weather_data(dt=ts)
-        dfs.append(df)
-        ts-=oditsu
+        df = get_cities_weather_data(ts)
+        ts -= oditsu
+        # Limpiamos y agregamos a la lista
+        cleaned_data_list.append(clean_data(df))
         
-    return pd.concat(dfs, axis=0)
+    return cleaned_data_list
+
