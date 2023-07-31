@@ -1,8 +1,7 @@
 import requests
-from config import *
-from datetime_utils import *
-from file_utils import *
-from clean_data import clean_data
+from utils.clean_data import clean_data
+from utils.datetime_utils import dtnow
+from settings.config import *
 
 
 def request_data(city: str = None, coord: str = None, dt: str = None):

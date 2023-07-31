@@ -1,7 +1,7 @@
 import os
-from dotenv import load_dotenv, find_dotenv
+from dotenv import dotenv_values
 
-_ = load_dotenv(find_dotenv())
+cfg = { ** dotenv_values('.env') }
 
 API_KEY = os.getenv('api_key')
 BASE_URL = "https://api.openweathermap.org/data/2.5/onecall/timemachine"
@@ -9,11 +9,6 @@ UNITS = 'metric'
 FOLDER = 'data_analytics/openweather'
 FILENAME = FOLDER + '/tiempodiario'
 
-DB_HOST = os.getenv("DB_HOST")
-DB_PORT = os.getenv("DB_PORT")
-DB_NAME = os.getenv("DB_NAME")
-DB_USER = os.getenv("DB_USER")
-DB_PASS = os.getenv("DB_PASS")
 
 cityCoord = {
     "Resistencia, AR": (-27.4511, -58.9866),

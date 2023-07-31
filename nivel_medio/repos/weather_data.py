@@ -1,7 +1,7 @@
 from datetime import datetime
 from sqlalchemy import create_engine, Column, DateTime, Integer, String
 from sqlalchemy.orm import sessionmaker, declarative_base
-from config import *
+from settings.config import *
 
 # Crear una clase base declarativa para las clases ORM
 Base = declarative_base()
@@ -20,7 +20,7 @@ class WeatherData(Base):
     created_at = Column(DateTime, default=lambda: datetime.now())
 
 
-con_str = f"postgresql://{DB_USER}:{DB_PASS}@{DB_HOST}:{DB_PORT}/{DB_NAME}"
+con_str = f"postgresql://{cfg['DB_USER']}:{cfg['DB_PASS']}@{cfg['DB_HOST']}:{cfg['DB_PORT']}/{cfg['DB_NAME']}"
 
 # Configuración de la base de datos
 engine = create_engine(con_str)
