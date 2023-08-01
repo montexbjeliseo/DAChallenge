@@ -11,28 +11,26 @@ def request_data(city: str = None, coord: str = None, dt: str = None):
     De lo contrario, intentará manejar las excepciones
     """
 
+    params = {
+        "lat": coord[0],
+        "lon": coord[1],
+        "units": UNITS,
+        "appid": cfg['API_KEY'],
+        "dt": dt,
+        "exclude": "exclude=minutely, hourly",
+    }
+    logger.info(f"params: {params}\n\n")
+    response = requests.get(BASE_URL, params)
+
     try:
-        params = {
-            "lat": coord[0],
-            "lon": coord[1],
-            "units": UNITS,
-            "appid": cfg['API_KEY'],
-            "dt": dt,
-            "exclude": "exclude=minutely, hourly",
-        }
-        logger.info(f"params: {params}")
-        response = requests.get(BASE_URL, params)
-
-        response.raise_for_status()
-
+        response.raise_for_status()  # Genera una excepción para errores HTTP (status_code >= 400)
         return response.json()
-
-    except requests.exceptions.RequestException as e:
-        logger.error(f"Error en la solicitud: {e}")
-    except KeyError as e:
-        logger.error(f"Error en el formato de respuesta de la API: {e}")
+    except requests.exceptions.HTTPError as e:
+        logger.error(f"Error en la solicitud: {e}\nCódigo de estado: {response.status_code}\nMensaje de error: {response.text}\n\n")
+        raise 
     except Exception as e:
-        logger.error(f"Error desconocido: {e}")
+        logger.error(f"Error desconocido: {e}\n\n")
+        raise
 
 
 def get_cities_weather_data(dt):
@@ -48,6 +46,7 @@ def get_cities_weather_data(dt):
 
     for city, coord in cityCoord.items():
         coord_data = request_data(coord=coord, dt=dt)
+        print(coord_data)
         if coord_data:
             city_data = {}
             city_data["city"] = city
@@ -65,6 +64,8 @@ def get_last_five_days_cities_weather_data():
     cleaned_data_list = []
     for i in range(5):
         df = get_cities_weather_data(ts)
+
+        print('\n\n',df,'\n\n')
         ts -= oditsu
         # Limpiamos y agregamos a la lista
         cleaned_data_list.append(clean_data(df))
