@@ -18,19 +18,13 @@ class WeatherData(Base):
     sunset_local = Column(String)
     created_at = Column(DateTime, default=lambda: datetime.now())
 
-def store_weather_data(city, dt, temp, my_timezone, sunrise, sunset):
-    """Almacenar datos meteorológicos en la base de datos."""
-    try:
-        print(CON_STR)
-    except:
-        print('error en print')
-    try:
-        engine = create_engine(CON_STR)
-        Session = sessionmaker(bind=engine)
-    except Exception as e:
-        print(e)
+engine = create_engine(CON_STR)
+Base.metadata.create_all(engine)
 
-    session = Session()
+def store_weather_data(city, dt, temp, my_timezone, sunrise, sunset, session):
+    """Almacenar datos meteorológicos en la base de datos."""
+    
+
     weather_data = WeatherData(
         city=city,
         dt=dt,
@@ -41,4 +35,4 @@ def store_weather_data(city, dt, temp, my_timezone, sunrise, sunset):
     )
     session.add(weather_data)
     session.commit()
-    session.close()
+    

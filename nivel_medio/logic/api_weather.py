@@ -46,7 +46,6 @@ def get_cities_weather_data(dt):
 
     for city, coord in cityCoord.items():
         coord_data = request_data(coord=coord, dt=dt)
-        print(coord_data)
         if coord_data:
             city_data = {}
             city_data["city"] = city
