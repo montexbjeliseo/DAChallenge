@@ -3,7 +3,6 @@ from utils.clean_data import clean_data
 from utils.datetime_utils import dtnow
 from settings.config import *
 
-
 def request_data(city: str = None, coord: str = None, dt: str = None):
     """
     Recibe "city" que es el nombre de la ciudad, en formato string
@@ -17,11 +16,11 @@ def request_data(city: str = None, coord: str = None, dt: str = None):
             "lat": coord[0],
             "lon": coord[1],
             "units": UNITS,
-            "appid": API_KEY,
+            "appid": cfg['API_KEY'],
             "dt": dt,
             "exclude": "exclude=minutely, hourly",
         }
-
+        logger.info(f"params: {params}")
         response = requests.get(BASE_URL, params)
 
         response.raise_for_status()
@@ -29,11 +28,11 @@ def request_data(city: str = None, coord: str = None, dt: str = None):
         return response.json()
 
     except requests.exceptions.RequestException as e:
-        print(f"Error en la solicitud: {e}")
+        logger.error(f"Error en la solicitud: {e}")
     except KeyError as e:
-        print(f"Error en el formato de respuesta de la API: {e}")
+        logger.error(f"Error en el formato de respuesta de la API: {e}")
     except Exception as e:
-        print(f"Error desconocido: {e}")
+        logger.error(f"Error desconocido: {e}")
 
 
 def get_cities_weather_data(dt):

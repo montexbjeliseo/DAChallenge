@@ -1,4 +1,4 @@
-from datetime_utils import format_datetime
+from utils.datetime_utils import format_datetime
 
 
 def clean_data(city_raw_data_list):

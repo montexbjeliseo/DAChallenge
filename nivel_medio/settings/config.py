@@ -1,14 +1,13 @@
-import os
 from dotenv import dotenv_values
+import logging
 
 cfg = { ** dotenv_values('.env') }
 
-API_KEY = os.getenv('api_key')
 BASE_URL = "https://api.openweathermap.org/data/2.5/onecall/timemachine"
 UNITS = 'metric'
 FOLDER = 'data_analytics/openweather'
 FILENAME = FOLDER + '/tiempodiario'
-
+CON_STR = f"postgresql://{cfg['DB_USER']}:{cfg['DB_PASS']}@{cfg['DB_HOST']}:{cfg['DB_PORT']}/{cfg['DB_NAME']}"
 
 cityCoord = {
     "Resistencia, AR": (-27.4511, -58.9866),
@@ -23,3 +22,6 @@ cityCoord = {
     # "Bogotá, CO":    (4.60971, -74.081749),     
     # "Tokyo, JP": (35.689499, 139.691711)    
 }
+
+logging.basicConfig(level=logging.INFO, format='%(levelname)s: %(message)s')
+logger = logging.getLogger(__name__)
