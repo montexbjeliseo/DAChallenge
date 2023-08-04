@@ -1,7 +1,7 @@
 import config
 import requests
 import json
-from datetime import datetime, time, timedelta
+from datetime import datetime, timedelta
 import pandas as pd
 
 from alive_progress import alive_bar, animations
