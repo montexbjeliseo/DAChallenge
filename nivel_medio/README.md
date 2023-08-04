@@ -39,3 +39,35 @@ En esta etapa del proyecto, se utilizará la librería Pandas para procesar los 
 
 **Parte Práctica:**
 Ya hemos utilizado la librería Pandas en la parte práctica anterior, donde hemos procesado los datos y los hemos cargado en la base de datos utilizando esta herramienta.
+
+## Getting started
+1. Es recomendable crear un entorno virtual e instalar las dependencias:
+
+    Bash:
+    ```bash
+    python -m venv env
+    source env/Scripts/activate
+    pip install -r requirements.txt
+    ```
+    Windows cmd:
+    ```cmd
+    python -m venv env
+    env/Scripts/activate
+    pip install -r requirements.txt
+    ```
+
+2. Crear el archivo .env:
+    
+    ```ini
+    api_key=my_api_key
+    DB_HOST=my_db_host
+    DB_PORT=my_db_port
+    DB_NAME=my_db_name
+    DB_USER=my_db_user
+    DB_PASS=my_db_password
+    ```
+
+3. Lanzar la app:
+    ```bash
+    python main.py
+    ```
