@@ -13,7 +13,6 @@ def index():
         weather_data = get_current_weather_data(city)
         if not weather_data:
             errors.append('Asegúrese de haber escrito bien el nombre de la ciudad')
-        errors.append("asdasdasd")
     return render_template('index.html', weather_data=weather_data, errors=errors)
 
 

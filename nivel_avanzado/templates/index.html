@@ -1,24 +1,85 @@
 {% extends 'base.html' %}
-
 {% block content %}
-<section class="container">
-    <h1 class="mt-5">Weather App</h1>
-    <form action="/" method="post">
-        <input type="text" name="city" placeholder="Ingrese una ciudad" required>
-        <button type="submit">Buscar</button>
+<section class="container mt-5">
+
+    <h1>Weather App</h1>
+    <form action="" method="POST">
+        <div class="row">
+            <div class="col-8">
+                <input class="form-control" type="text" name="city" required
+                    placeholder="Escribe el nombre de una ciudad aquí">
+
+            </div>
+            <div class="col"><button type="submit" class="btn btn-success">Buscar</button></div>
+        </div>
     </form>
-    {% for error in errors %}
-    <p class="text-center text-danger">{{error}}</p>
-    {% endfor %}
     {% if weather_data %}
-    <div class="weather-info">
-        <h2>{{ weather_data['city'] }}</h2>
-        <p><img src="http://openweathermap.org/img/w/{{weather_data['icon']}}.png" alt="">{{ weather_data['description'] }}</p>
-        <p><b>Temperatura</b> {{ weather_data['temperature'] }}°C</p>
-        <p><b>Humedad:</b> {{ weather_data['humidity'] }}%</p>
-        <p><b>Viento:</b> {{ weather_data['wind_speed'] }} km/h</p>
-        <p><b>Amanecer:</b> {{ weather_data['sunrise'] }}</p>
-        <p><b>Anochecer:</b> {{ weather_data['sunset'] }}</p>
+    <div class="row mt-3">
+        <div class="col-12">
+            <h2>{{ weather_data['city'] }}, {{ weather_data['country'] }}</h2>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col">
+            <img src="http://openweathermap.org/img/w/{{weather_data['icon']}}.png" alt="" width="32" height="32"> {{
+            weather_data['temperature'] }}°C
+            <p>{{ weather_data['description'] }}</p>
+            <p><b>Amanecer:</b> {{ weather_data['sunrise'] }}</p>
+            <p><b>Atardecer:</b> {{ weather_data['sunset'] }}</p>
+        </div>
+        <div class="col">
+            <p><b>Humedad:</b> {{ weather_data['humidity'] }}%</p>
+            <p><b>Viento:</b> {{ weather_data['wind_speed'] }} km/h</p>
+            <p><b>Presión:</b> {{ weather_data['pressure'] }} hPa</p>
+            <p><b>Visibilidads:</b> {{ weather_data['visibility'] }} km</p>
+        </div>
+    </div>
+    <div class="row mt-3">
+        <h3 class="text-muted">Pronóstico</h3>
+        <div class="row">
+            <div class="col">
+                <h4>Domingo</h4>
+                <p> <img src="https://www.smn.gob.ar/sites/all/themes/smn/img/weather-icons/13.png" alt="" width="24"
+                        height="24" />Despejado</p>
+                <p><b>Mínima: </b>22°C</p>
+                <p><b>Máxima: </b>36°C</p>
+            </div>
+            <div class="col">
+                <h4>Domingo</h4>
+                <p> <img src="https://www.smn.gob.ar/sites/all/themes/smn/img/weather-icons/13.png" alt="" width="24"
+                        height="24" />Despejado</p>
+                <p><b>Mínima: </b>22°C</p>
+                <p><b>Máxima: </b>36°C</p>
+            </div>
+            <div class="col">
+                <h4>Domingo</h4>
+                <p> <img src="https://www.smn.gob.ar/sites/all/themes/smn/img/weather-icons/13.png" alt="" width="24"
+                        height="24" />Despejado</p>
+                <p><b>Mínima: </b>22°C</p>
+                <p><b>Máxima: </b>36°C</p>
+            </div>
+            <div class="col">
+                <h4>Domingo</h4>
+                <p> <img src="https://www.smn.gob.ar/sites/all/themes/smn/img/weather-icons/13.png" alt="" width="24"
+                        height="24" />Despejado</p>
+                <p><b>Mínima: </b>22°C</p>
+                <p><b>Máxima: </b>36°C</p>
+            </div>
+            <div class="col">
+                <h4>Domingo</h4>
+                <p> <img src="https://www.smn.gob.ar/sites/all/themes/smn/img/weather-icons/13.png" alt="" width="24"
+                        height="24" />Despejado</p>
+                <p><b>Mínima: </b>22°C</p>
+                <p><b>Máxima: </b>36°C</p>
+            </div>
+        </div>
+    </div>
+    {% endif %}
+    {% if errors %}
+    <div class="alert alert-danger mt-5">
+        {% for error in errors %}
+        <p>{{error}}</p>
+        {% endfor %}
     </div>
     {% endif %}
 </section>

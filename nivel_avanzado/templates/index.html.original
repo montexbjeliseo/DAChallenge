@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<section class="container">
+    <h1 class="mt-5">Weather App</h1>
+    <form action="/" method="post">
+        <input type="text" name="city" placeholder="Ingrese una ciudad" required>
+        <button type="submit">Buscar</button>
+    </form>
+    {% for error in errors %}
+    <p class="text-center text-danger">{{error}}</p>
+    {% endfor %}
+    {% if weather_data %}
+    <div class="weather-info">
+        <h2>{{ weather_data['city'] }}</h2>
+        <p><img src="http://openweathermap.org/img/w/{{weather_data['icon']}}.png" alt="">{{ weather_data['description'] }}</p>
+        <p><b>Temperatura</b> {{ weather_data['temperature'] }}°C</p>
+        <p><b>Sensación térmica</b> {{ weather_data['feels_like'] }}°C</p>
+        <p><b>Humedad:</b> {{ weather_data['humidity'] }}%</p>
+        <p><b>Viento:</b> {{ weather_data['wind_speed'] }} km/h</p>
+        <p><b>Amanecer:</b> {{ weather_data['sunrise'] }}</p>
+        <p><b>Atardecer:</b> {{ weather_data['sunset'] }}</p>
+    </div>
+    {% endif %}
+</section>
+{% endblock content %}
