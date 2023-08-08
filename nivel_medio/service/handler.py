@@ -2,14 +2,10 @@ from settings.config import *
 from repos.weather_data import store_weather_data
 from logic.api_weather import get_last_five_days_cities_weather_data as logic
 from sqlalchemy import create_engine
-from sqlalchemy.orm import sessionmaker, declarative_base
+from sqlalchemy.orm import sessionmaker
 
 def store_data():
     weather_data = logic()
-    try:
-        print(CON_STR)
-    except:
-        print('error en print')
     try:
         engine = create_engine(CON_STR)
         Session = sessionmaker(bind=engine)

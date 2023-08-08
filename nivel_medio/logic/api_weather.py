@@ -64,7 +64,6 @@ def get_last_five_days_cities_weather_data():
     for i in range(5):
         df = get_cities_weather_data(ts)
 
-        print('\n\n',df,'\n\n')
         ts -= oditsu
         # Limpiamos y agregamos a la lista
         cleaned_data_list.append(clean_data(df))
