@@ -1,5 +1,5 @@
 import requests
-from utils import time
+from utils import time, clean_forecast_data, day
 from dotenv import load_dotenv
 import os
 
@@ -32,3 +32,17 @@ def get_current_weather_data(city):
         return weather
 
     return None
+
+def get_forecast_data(city):
+    url = f"https://api.openweathermap.org/data/2.5/forecast?q={city}&units=metric&appid={API_KEY}&lang=es"
+    response = requests.get(url)
+    response_data = response.json()
+    tz = response_data["city"]["timezone"]
+    if response.status_code == 200:
+        response_data_list = response_data["list"]
+        
+        cleaned_data_list = clean_forecast_data(response_data_list, tz)
+        return cleaned_data_list
+            
+    return None
+
