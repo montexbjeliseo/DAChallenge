@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+{% block content %}
+<section class="container mt-5">
+
+    <h1>Weather App</h1>
+    {% include 'search_form.html' %}
+    {% if weather_data %}
+    <div class="row mt-3">
+        <div class="col-12">
+            <h2>{{ weather_data['city'] }}, {{ weather_data['country'] }}</h2>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col">
+            <img src="http://openweathermap.org/img/w/{{weather_data['icon']}}.png" alt="" width="32" height="32"> {{
+            weather_data['temperature'] }}°C
+            <p>{{ weather_data['description'] }}</p>
+            <p><b>Amanecer:</b> {{ weather_data['sunrise'] }}</p>
+            <p><b>Atardecer:</b> {{ weather_data['sunset'] }}</p>
+        </div>
+        <div class="col">
+            <p><b>Humedad:</b> {{ weather_data['humidity'] }}%</p>
+            <p><b>Viento:</b> {{ weather_data['wind_speed'] }} km/h</p>
+            <p><b>Presión:</b> {{ weather_data['pressure'] }} hPa</p>
+            <p><b>Visibilidads:</b> {{ weather_data['visibility'] }} km</p>
+        </div>
+    </div>
+    
+    {% include 'forecast.html' %}
+    {% endif %}
+    {% if errors %}
+    <div class="alert alert-danger mt-5">
+        {% for error in errors %}
+        <p>{{error}}</p>
+        {% endfor %}
+    </div>
+    {% endif %}
+</section>
+{% endblock content %}

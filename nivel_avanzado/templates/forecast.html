@@ -1,0 +1,48 @@
+<div class="mb-5">
+    <ul class="nav nav-tabs" id="myTab" role="tablist">
+        {% set ns = namespace(prev='', first=True) %}
+        {% for day in forecast_data["day"] %}
+
+        {% if day != ns.prev %}
+        <li class="nav-item" role="presentation">
+            <button class="nav-link text-secondary {% if ns.first %}active{% endif %}" id="{{day}}-tab"
+                data-bs-toggle="tab" data-bs-target="#{{day}}-content" type="button" role="tab" aria-controls="{{day}}"
+                aria-selected="{% if ns.first %}true{% endif %}">{{day}}</button>
+        </li>
+        {% endif %}
+        {%- set ns.first = False %}
+        {%- set ns.prev = day %}
+        {% endfor %}
+    </ul>
+    <div class="tab-content" id="myTabContent">
+        <!-- Tab content begin -->
+        {% set ns = namespace(first=True, prev='') %}
+        {% for day in forecast_data["day"] %}
+        {% set data = forecast_data[(forecast_data["day"] == day)] %}
+        {% if day != ns.prev %}
+        <div class="tab-pane fade {% if ns.first %}show active{% endif %}" id="{{day}}-content" role="tabpanel"
+            aria-labelledby="home-tab">
+            {% for i, r in data.iterrows() %}
+            <div class="row">
+                <div class="col">
+
+                    <p>{{r["time"]}}</p>
+                    <p><img src="http://openweathermap.org/img/w/{{weather_data['icon']}}.png" alt="" width="32"
+                            height="32" />{{r["weather_description"]}}</p>
+                </div>
+                <div class="col">
+                    <p><b>Mínima:</b> {{r["main.temp_min"]}}°C</p>
+                    <p><b>Máxima:</b> {{r["main.temp_max"]}}°C</p>
+                </div>
+            </div>
+            <hr>
+            {% endfor %}
+        </div>
+        {% endif %}
+        {%- set ns.first = False %}
+        {%- set ns.prev = day %}
+
+        {% endfor %}
+
+    </div>
+</div>
