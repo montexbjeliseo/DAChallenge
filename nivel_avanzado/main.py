@@ -16,10 +16,18 @@ def index():
     if request.method == "POST":
         city = request.form["city"]
         weather_data = get_current_weather_data(city)
-        forecast_data = get_forecast_data(city)
+        
 
         if not weather_data:
             errors.append("Asegúrese de haber escrito bien el nombre de la ciudad")
+            return render_template(
+                "index.html", 
+                weather_data=None, 
+                errors=errors, 
+                forecast_data=None
+            ), 400
+            
+        forecast_data = get_forecast_data(city)
 
     return render_template(
         "index.html", weather_data=weather_data, errors=errors, forecast_data=forecast_data
