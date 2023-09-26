@@ -20,6 +20,7 @@ python-dotenv==1.0.0
 pytz==2023.3
 requests==2.31.0
 six==1.16.0
+psycopg2==2.9.6
 SQLAlchemy==2.0.19
 typing_extensions==4.7.1
 tzdata==2023.3
